@@ -71,7 +71,7 @@ def relu(x: float) -> float:
 
     (See https://en.wikipedia.org/wiki/Rectifier_(neural_networks) .)
     """
-    return x if x > 0 else 0
+    return x if x > 0.0 else 0.0
 
 
 EPS = 1e-6
@@ -104,8 +104,9 @@ def inv_back(x: float, d: float) -> float:
 
 def relu_back(x: float, d: float) -> float:
     r"If $f = relu$ compute $d \times f'(x)$"
-    assert x != 0  # relu is non-differentiable at zero
-    return 0 if x < 0 else d
+    # relu is non-differentiable at zero (mathematically)
+    # but PyTorch returns a gradient of 0 for relu at 0
+    return 0 if x <= 0 else d
 
 
 # ## Task 0.3
